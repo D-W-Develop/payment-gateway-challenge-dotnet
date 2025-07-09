@@ -1,29 +1,22 @@
+using System.Text.Json.Serialization;
+using PaymentGateway.Api.BankClients.ABCBank;
+using PaymentGateway.Api.Repository;
 using PaymentGateway.Api.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-
-builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
-
-builder.Services.AddSingleton<PaymentsRepository>();
-
+//Services
+builder.Services
+    .AddControllers()
+    .AddJsonOptions(options => options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()));
+builder.Services.AddSingleton<IValidationService, ValidationService>();
+builder.Services.AddHttpClient<IABCBankClient, ABCBankClient>(c => c.BaseAddress = new("http://localhost:8080/"));
+builder.Services.AddSingleton<IPaymentRecordMappingService, PaymentRecordMappingService>();
+builder.Services.AddSingleton<PaymentRecordRepository>();
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
-
+//Config
 app.UseHttpsRedirection();
-
 app.UseAuthorization();
-
 app.MapControllers();
-
 app.Run();
