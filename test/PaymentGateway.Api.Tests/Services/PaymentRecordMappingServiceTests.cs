@@ -1,9 +1,6 @@
 ﻿using System;
-
-using PaymentGateway.Api.Contract;
 using PaymentGateway.Api.PaymentsController.Models;
 using PaymentGateway.Api.Services;
-
 using Xunit;
 
 namespace PaymentGateway.Api.Tests.Services;

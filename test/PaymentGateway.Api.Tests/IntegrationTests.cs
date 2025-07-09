@@ -23,7 +23,7 @@ public abstract class IntegrationTests
     protected readonly JsonSerializerOptions _options;
     public IntegrationTests()
     {
-        var webApplicationFactory = new WebApplicationFactory<PaymentsController>();
+        var webApplicationFactory = new WebApplicationFactory<Controllers.PaymentsController>();
         _appClient = webApplicationFactory.CreateClient();
         _options = new JsonSerializerOptions() { PropertyNameCaseInsensitive = true };
         _options.Converters.Add(new JsonStringEnumConverter());
